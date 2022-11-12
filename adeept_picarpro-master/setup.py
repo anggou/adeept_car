@@ -132,7 +132,7 @@ except:
 
 os.system('sudo chmod 777 //home/pi/startup.sh')
 
-replace_num('/etc/rc.local','fi','fi\n//home/pi/startup.sh start')
+# replace_num('/etc/rc.local','fi','fi\n//home/pi/startup.sh start')
 
 try: #fix conflict with onboard Raspberry Pi audio
 	os.system('sudo touch /etc/modprobe.d/snd-blacklist.conf')
