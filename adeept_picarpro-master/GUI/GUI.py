@@ -645,6 +645,10 @@ def motor_buttons(x,y):
 	def call_PT(event):
 		tcpClicSock.send(('PT').encode())
 
+	def check_spare(event):
+		tcpClicSock.send(('C_S').encode())
+
+
 	Btn_AR = tk.Button(root, width=8, text='ARM',fg=color_text,bg=color_btn,relief='ridge')
 	Btn_AR.place(x=x,y=y)
 	Btn_AR.bind('<ButtonPress-1>', call_AR)
@@ -672,15 +676,22 @@ def motor_buttons(x,y):
 	Btn_1.bind('<ButtonPress-1>', call_backward)
 	Btn_1.bind('<ButtonRelease-1>', call_DS)
 	root.bind('<KeyPress-s>', call_backward)
-	root.bind('<KeyRelease-s>', call_DS)
+	root.bind('<KeyRelease-s>', call_DS) # 모터 중지
 
 	Btn_2 = tk.Button(root, width=8, text='Right',fg=color_text,bg=color_btn,relief='ridge')
 	Btn_2.place(x=x+140,y=y+35)
 	Btn_2.bind('<ButtonPress-1>', call_right)
 	Btn_2.bind('<ButtonRelease-1>', call_TS)
 	root.bind('<KeyPress-d>', call_right) 
-	root.bind('<KeyRelease-d>', call_TS) 
+	root.bind('<KeyRelease-d>', call_TS) # 서보 중립으로
 
+''' #webserver.py 에도 check_spare를 추가해야댐 , call_TS를 check_spare를 정지하게끔 설정
+
+	Btn_2 = tk.Button(root, width=8, text='check_spare',fg=color_text,bg=color_btn,relief='ridge')
+	Btn_2.place(x=x+140,y=y+35)
+	root.bind('<KeyPress-c>', check_spare)
+	root.bind('<KeyRelease-c>', call_TS)
+'''
 
 def information_screen(x,y):
 	global CPU_TEP_lab, CPU_USE_lab, RAM_lab, l_ip_4, l_ip_5

@@ -208,7 +208,6 @@ def robotCtrl(command_input, response):
         direction_command = 'no'
         move.move(speed_set, 'no', 'no', rad)
 
-
     elif 'left' == command_input:
         scGear.moveAngle(0,turnWiggle)
 
