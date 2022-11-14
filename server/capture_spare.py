@@ -2,9 +2,9 @@ import move
 import cv2
 import RPi.GPIO as GPIO
 
-def capture_spare():
-    cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0)
 
+def capture_spare():
     while cap.isOpened():  # 초기화
         keyValue = cv2.waitKey(0)
         i = 0
@@ -18,9 +18,9 @@ def capture_spare():
         height, _, _ = image.shape
         save_image = image[int(height / 2):, :, :]
         cv2.imshow('Save', save_image)
+
         if keyValue == ord('q'):
             break
-
         elif keyValue == 82:
             move.move(50, 'forward', 'no', 1)
             print("go")
