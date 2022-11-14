@@ -2,10 +2,6 @@ import move
 import cv2
 import RPi.GPIO as GPIO
 
-
-
-
-
 def capture_spare():
     cap = cv2.VideoCapture(0)
 
