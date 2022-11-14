@@ -2,12 +2,14 @@ import move
 import cv2
 import RPi.GPIO as GPIO
 
-cap = cv2.VideoCapture(0)
-filepath = "/home/pi/Videos/train"
+
+
 
 
 def capture_spare():
+    cap = cv2.VideoCapture(0)
     i = 0
+    filepath = "/home/pi/Videos/train"
     while cap.isOpened():  # 초기화
         keyValue = cv2.waitKey(0)
         ret, img = cap.read()
