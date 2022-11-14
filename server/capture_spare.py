@@ -3,10 +3,7 @@ import move
 import cv2
 import RPi.GPIO as GPIO
 
-model = tensorflow.keras.models.load_model('keras_model.h5')  # file 집어넣기
 cap = cv2.VideoCapture(0)
-size = (224, 224)
-classes = ['nozzle_1', 'nozzle_1', 'nozzle_1', 'pump_1', 'pump_2', 'pump_3']
 
 def capture_spare():
     while cap.isOpened(): #초기화

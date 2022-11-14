@@ -5,8 +5,7 @@ import cv2
 model = tensorflow.keras.models.load_model('keras_model.h5')  # file 집어넣기
 cap = cv2.VideoCapture(0)
 size = (224, 224)
-classes = ['empty', 'nozzle_1', 'nozzle_1', 'nozzle_1', 'pump_1', 'pump_2', 'pump_3']
-
+classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
 
 def Check_spare():
     while cap.isOpened():  # 초기화
