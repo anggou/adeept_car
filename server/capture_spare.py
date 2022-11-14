@@ -5,10 +5,11 @@ import RPi.GPIO as GPIO
 cap = cv2.VideoCapture(0)
 
 def capture_spare():
+    i = 0
+    filepath = "/home/pi/Videos/train"
+    keyValue = cv2.waitKey(0)
+
     while cap.isOpened(): #초기화
-        filepath = "/home/pi/Videos/train"
-        i = 0
-        keyValue = cv2.waitKey(0)
         ret, img = cap.read()
         if not ret:
             break
