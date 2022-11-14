@@ -132,7 +132,8 @@ except:
 
 os.system('sudo chmod 777 //home/pi/startup.sh')
 
-# replace_num('/etc/rc.local','fi','fi\n//home/pi/startup.sh start')
+# replace_num('/etc/rc.local','fi','fi\n//home/pi/startup.sh start') # 시작할때, webserver 시작하기 위한 코드
+
 
 try: #fix conflict with onboard Raspberry Pi audio
 	os.system('sudo touch /etc/modprobe.d/snd-blacklist.conf')
