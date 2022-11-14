@@ -1,4 +1,3 @@
-import tensorflow.keras
 import move
 import cv2
 import RPi.GPIO as GPIO
