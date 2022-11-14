@@ -10,7 +10,7 @@ classes = ['nozzle_1', 'nozzle_1', 'nozzle_1', 'pump_1', 'pump_2', 'pump_3']
 
 def capture_spare():
     while cap.isOpened(): #초기화
-        filepath = "/home/pi/AI_CAR/video/train"
+        filepath = "/home/pi/Videos/train"
         i = 0
         keyValue = cv2.waitKey(0)
         ret, img = cap.read()
