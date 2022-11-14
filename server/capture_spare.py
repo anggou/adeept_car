@@ -17,7 +17,7 @@ def capture_spare():
         image = cv2.flip(image, -1)
         # cv2.imshow('Capture_camera', image)
         height, _, _ = image.shape
-        save_image = image[int(height):, :, :]
+        save_image = image[int(height/2):, :, :]
         cv2.imshow('Save', save_image)
         if keyValue == ord('q'):
             break
