@@ -9,7 +9,6 @@ import threading
 from mpu6050 import mpu6050
 import Adafruit_PCA9685
 import os
-import json
 import ultra
 import Kalman_filter
 import move
@@ -19,7 +18,7 @@ move.setup()
 scGear = RPIservo.ServoCtrl()
 scGear.moveInit()
 
-kalman_filter_X =  Kalman_filter.Kalman_filter(0.01,0.1)
+kalman_filter_X =  Kalman_filter.Kalman_filter(0.01, 0.1)
 
 pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(50)

@@ -5,8 +5,6 @@
 # Date        : 2019/02/23
 from __future__ import division
 import time
-import RPi.GPIO as GPIO
-import sys
 import Adafruit_PCA9685
 import ultra
 

@@ -6,7 +6,6 @@
 # Date		: 2019/08/28
 
 import time
-import threading
 import cv2
 import zmq
 import base64
@@ -15,8 +14,6 @@ from picamera.array import PiRGBArray
 import argparse
 import imutils
 from collections import deque
-import psutil
-import os
 import servo
 import PID
 import LED
@@ -316,13 +313,13 @@ class FPV:
 						X_lock = 1
 
 					if X_lock == 1 and Y_lock == 1:
-						switch.switch(1,1)
-						switch.switch(2,1)
-						switch.switch(3,1)
+						switch.switch(1, 1)
+						switch.switch(2, 1)
+						switch.switch(3, 1)
 					else:
-						switch.switch(1,0)
-						switch.switch(2,0)
-						switch.switch(3,0)
+						switch.switch(1, 0)
+						switch.switch(2, 0)
+						switch.switch(3, 0)
 
 						# if UltraData > 0.5:
 						#	 move.move(70, 'forward', 'no', 0.6)
@@ -376,15 +373,15 @@ class FPV:
 					#print(text)
 					LED.colorWipe(255,16,0)
 					lastMovtionCaptured = timestamp
-					switch.switch(1,1)
-					switch.switch(2,1)
-					switch.switch(3,1)
+					switch.switch(1, 1)
+					switch.switch(2, 1)
+					switch.switch(3, 1)
 
 				if (timestamp - lastMovtionCaptured).seconds >= 0.5:
 					LED.colorWipe(255,255,0)
-					switch.switch(1,0)
-					switch.switch(2,0)
-					switch.switch(3,0)
+					switch.switch(1, 0)
+					switch.switch(2, 0)
+					switch.switch(3, 0)
 
 			if FindLineMode and not frameRender:#2
 				encoded, buffer = cv2.imencode('.jpg', frame_findline)

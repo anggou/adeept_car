@@ -1,9 +1,7 @@
-import threading
 import time
 import cv2
 import RPi.GPIO as GPIO
 import numpy as np
-import tensorflow as tf
 import move
 from tensorflow.keras.models import load_model
 

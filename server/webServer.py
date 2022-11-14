@@ -8,7 +8,6 @@
 import time
 import threading
 import move
-import Adafruit_PCA9685
 import os
 import info
 import RPIservo
@@ -132,9 +131,9 @@ def functionSelect(command_input, response):
 
     elif 'stopCV' == command_input:
         flask_app.modeselect('none')
-        switch.switch(1,0)
-        switch.switch(2,0)
-        switch.switch(3,0)
+        switch.switch(1, 0)
+        switch.switch(2, 0)
+        switch.switch(3, 0)
 
     elif 'police' == command_input:
         if OLED_connection:
@@ -177,22 +176,22 @@ def functionSelect(command_input, response):
 
 def switchCtrl(command_input, response):
     if 'Switch_1_on' in command_input:
-        switch.switch(1,1)
+        switch.switch(1, 1)
 
     elif 'Switch_1_off' in command_input:
-        switch.switch(1,0)
+        switch.switch(1, 0)
 
     elif 'Switch_2_on' in command_input:
-        switch.switch(2,1)
+        switch.switch(2, 1)
 
     elif 'Switch_2_off' in command_input:
-        switch.switch(2,0)
+        switch.switch(2, 0)
 
     elif 'Switch_3_on' in command_input:
-        switch.switch(3,1)
+        switch.switch(3, 1)
 
     elif 'Switch_3_off' in command_input:
-        switch.switch(3,0) 
+        switch.switch(3, 0)
 
 
 def robotCtrl(command_input, response):
@@ -527,7 +526,7 @@ if __name__ == '__main__':
 
 
     try:
-        RL=robotLight.RobotLight()
+        RL= robotLight.RobotLight()
         RL.start()
         RL.breath(70,70,255)
     except:

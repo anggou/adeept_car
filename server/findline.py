@@ -5,7 +5,6 @@
 # Author      : William
 # Date        : 2019/08/28
 import RPi.GPIO as GPIO
-import time
 import move
 
 '''

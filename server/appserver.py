@@ -167,14 +167,14 @@ def app_ctrl():
             servo_move.resume()
 
         elif data_input == 'cStart\n':
-            switch.switch(1,1)
-            switch.switch(2,1)
-            switch.switch(3,1)
+            switch.switch(1, 1)
+            switch.switch(2, 1)
+            switch.switch(3, 1)
 
         elif data_input == 'dStart\n':
-            switch.switch(1,0)
-            switch.switch(2,0)
-            switch.switch(3,0)
+            switch.switch(1, 0)
+            switch.switch(2, 0)
+            switch.switch(3, 0)
 
         elif 'aStop' in data_input:
             servo_move.pause()

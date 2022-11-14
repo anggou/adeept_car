@@ -8,7 +8,6 @@ import switch
 import datetime
 import Kalman_filter
 import PID
-import time
 import threading
 import imutils
 
@@ -32,8 +31,8 @@ colorLower = np.array([24, 100, 100])
 class CVThread(threading.Thread):
     font = cv2.FONT_HERSHEY_SIMPLEX
 
-    kalman_filter_X =  Kalman_filter.Kalman_filter(0.01,0.1)
-    kalman_filter_Y =  Kalman_filter.Kalman_filter(0.01,0.1)
+    kalman_filter_X =  Kalman_filter.Kalman_filter(0.01, 0.1)
+    kalman_filter_Y =  Kalman_filter.Kalman_filter(0.01, 0.1)
     P_direction = 1
     T_direction = -1
     P_servo = 1
@@ -179,15 +178,15 @@ class CVThread(threading.Thread):
             #print(motionCounter)
             #print(text)
             self.lastMovtionCaptured = timestamp
-            switch.switch(1,1)
-            switch.switch(2,1)
-            switch.switch(3,1)
+            switch.switch(1, 1)
+            switch.switch(2, 1)
+            switch.switch(3, 1)
 
         if (timestamp - self.lastMovtionCaptured).seconds >= 0.5:
             self.drawing = 0
-            switch.switch(1,0)
-            switch.switch(2,0)
-            switch.switch(3,0)
+            switch.switch(1, 0)
+            switch.switch(2, 0)
+            switch.switch(3, 0)
         self.pause()
 
 
@@ -310,13 +309,13 @@ class CVThread(threading.Thread):
             CVThread.servoMove(CVThread.T_servo, CVThread.T_direction, error_Y)
 
             if CVThread.X_lock == 1 and CVThread.Y_lock == 1:
-                switch.switch(1,1)
-                switch.switch(2,1)
-                switch.switch(3,1)
+                switch.switch(1, 1)
+                switch.switch(2, 1)
+                switch.switch(3, 1)
             else:
-                switch.switch(1,0)
-                switch.switch(2,0)
-                switch.switch(3,0)
+                switch.switch(1, 0)
+                switch.switch(2, 0)
+                switch.switch(3, 0)
         else:
             self.findColorDetection = 0
             move.motorStop()
@@ -433,7 +432,7 @@ class Camera(BaseCamera):
             _, img = camera.read()
 
             if Camera.modeSelect == 'none':
-                switch.switch(1,0)
+                switch.switch(1, 0)
                 cvt.pause()
             else:
                 if cvt.CVThreading:
