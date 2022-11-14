@@ -20,6 +20,7 @@ def capture_spare():
         cv2.imshow('Save', save_image)
         if keyValue == ord('q'):
             break
+
         elif keyValue == 82:
             move.move(50, 'forward', 'no', 1)
             print("go")
@@ -53,8 +54,9 @@ def capture_spare():
         elif keyValue == ord('0'):
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 0), save_image)
             i += 1
-        elif cv2.waitKey(1) == ord('q'):
-            break
+
+        # elif cv2.waitKey(1) == ord('q'):
+        #     break
 
 
 if __name__ == '__main__':
