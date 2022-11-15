@@ -10,7 +10,9 @@ line_pin_left = 20
 status_right = GPIO.input(line_pin_right)
 status_middle = GPIO.input(line_pin_middle)
 status_left = GPIO.input(line_pin_left
-
+camera = cv2.VideoCapture(-1)  # -1 ?? 0 이랑 같은듯
+camera.set(3, 640)
+camera.set(4, 480)
 
 
 def img_preprocess(image):
@@ -24,9 +26,7 @@ def img_preprocess(image):
     return image
 
 
-camera = cv2.VideoCapture(-1) # -1 ?? 0 이랑 같은듯
-camera.set(3, 640)
-camera.set(4, 480)
+
 
 
 def spare_capture():
