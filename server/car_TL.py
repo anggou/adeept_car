@@ -1,7 +1,7 @@
 import time
 import cv2
 import RPi.GPIO as GPIO
-import numpy as np
+# import numpy as np
 import move
 
 line_pin_right = 19
@@ -10,9 +10,7 @@ line_pin_left = 20
 status_right = GPIO.input(line_pin_right)
 status_middle = GPIO.input(line_pin_middle)
 status_left = GPIO.input(line_pin_left
-camera = cv2.VideoCapture(-1)  # -1 ?? 0 이랑 같은듯
-camera.set(3, 640)
-camera.set(4, 480)
+
 
 
 def img_preprocess(image):
@@ -29,33 +27,36 @@ def img_preprocess(image):
 
 
 
-def spare_capture():
-    model_path = '/home/pi/AI_CAR/model/lane_navigation_final.h5'
-    model = load_model(model_path)
-#model 설정
-    whatspare = "None"
-
-    try:
-        while True:
-            keyValue = cv2.waitKey(1) #키보드 입력대기
-
-            _, image = camera.read() #_은 읽기 성공여부, true or false
-            image = cv2.flip(image, -1) # 양수 = 좌우대칭, 0 = 상하대칭 , 음수 = 모두수행
-            preprocessed = img_preprocess(image)
-            cv2.imshow('pre', preprocessed) # 'pre' = 창제목 으로 창 띄워 보여주기
-            X = np.asarray([preprocessed])
-            whatspare = int(model.predict(X)[0])
-            print("spare is:", whatspare)
-
-            if whatspare == "nozzle":
-                print("nozzle") # GUI로 보내기
-            elif whatspare == "pump":
-                print("pump") # GUI로 보내기
-            else :
-                print("unknown")
-
-    except KeyboardInterrupt:
-        pass
+# def spare_capture():
+#     model_path = '/home/pi/AI_CAR/model/lane_navigation_final.h5'
+#     model = load_model(model_path)
+#     camera = cv2.VideoCapture(-1)  # -1 ?? 0 이랑 같은듯
+#     camera.set(3, 640)
+#     camera.set(4, 480)
+# #model 설정
+#     whatspare = "None"
+#
+#     try:
+#         while True:
+#             keyValue = cv2.waitKey(1) #키보드 입력대기
+#
+#             _, image = camera.read() #_은 읽기 성공여부, true or false
+#             image = cv2.flip(image, -1) # 양수 = 좌우대칭, 0 = 상하대칭 , 음수 = 모두수행
+#             preprocessed = img_preprocess(image)
+#             cv2.imshow('pre', preprocessed) # 'pre' = 창제목 으로 창 띄워 보여주기
+#             X = np.asarray([preprocessed])
+#             whatspare = int(model.predict(X)[0])
+#             print("spare is:", whatspare)
+#
+#             if whatspare == "nozzle":
+#                 print("nozzle") # GUI로 보내기
+#             elif whatspare == "pump":
+#                 print("pump") # GUI로 보내기
+#             else :
+#                 print("unknown")
+#
+#     except KeyboardInterrupt:
+#         pass
 
 # 여기서 부터는 Tracking line
 
@@ -78,7 +79,7 @@ def T_L():
         move.move(50, 'forward', 'left', 0.6)
     elif status_middle == 1 and status_left == 1 and status_right == 1:
         move.motorstop()
-        spare_capture()
+        # spare_capture()
         time.sleep(1)
         move.move(50, 'forward', 'no', 1)
     else:
