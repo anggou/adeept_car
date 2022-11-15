@@ -29,10 +29,9 @@ def img_preprocess(image):
 
 
 def spare_capture():
-    model_path = '/home/pi/AI_CAR/model/lane_navigation_final.h5'
-    model = load_model(model_path)
+    model_spare = load_model('/home/pi/AI_CAR/model/lane_navigation_final.h5')
 #model 설정
-    whatspare = "None"
+    spare = "empty"
 
     try:
         # keyValue = cv2.waitKey(1) #키보드 입력대기
@@ -47,24 +46,24 @@ def spare_capture():
         img_input = (img_input.astype(np.float32) / 127.0) - 1
         img_input = np.expand_dims(img_input, axis=0)
         cv2.imshow('pre', img_input) # 'pre' = 창제목 으로 창 띄워 보여주기
-        prediction = model.predict(img_input)
+        prediction = model_spare.predict(img_input)
         idx = np.argmax(prediction)
 
-        whatspare = int(classes[idx])
-        print("spare is:", whatspare)
-        if whatspare == "empty":
+        spare = int(classes[idx])
+        print("spare is:", spare)
+        if spare == 'empty':
             print("empty") # GUI로 보내기
-        elif whatspare == "nozzle_1":
+        elif spare == 'nozzle_1':
             print("Nozzle 1pcs")  # GUI로 보내기
-        elif whatspare == "nozzle_2":
+        elif spare == 'nozzle_2':
             print("Nozzle 2pcs") # GUI로 보내기
-        elif whatspare == "nozzle_3":
+        elif spare == 'nozzle_3':
             print("Nozzle 3pcs") # GUI로 보내기
-        elif whatspare == "pump_1":
+        elif spare == 'pump_1':
             print("Pump 1pcs") # GUI로 보내기
-        elif whatspare == "pump_2":
+        elif spare == 'pump_2':
             print("Pump 2pcs") # GUI로 보내기
-        elif whatspare == "pump_3":
+        elif spare == 'pump_3':
             print("Pump 3pcs") # GUI로 보내기
         else :
             print("unknown")

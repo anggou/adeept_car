@@ -3,20 +3,14 @@ import cv2
 import RPi.GPIO as GPIO
 import numpy as np
 import move
-from tensorflow.keras.models import load_model
 
-PWMA = 18
-AIN1 = 22
-AIN2 = 27
 line_pin_right = 19
 line_pin_middle = 16
 line_pin_left = 20
 status_right = GPIO.input(line_pin_right)
 status_middle = GPIO.input(line_pin_middle)
 status_left = GPIO.input(line_pin_left
-PWMB = 23
-BIN1 = 25
-BIN2 = 24
+
 
 
 def img_preprocess(image):
