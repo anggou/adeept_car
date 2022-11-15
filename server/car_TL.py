@@ -70,7 +70,7 @@ def T_L():
     line_pin_left = 20
     status_right = GPIO.input(line_pin_right)
     status_middle = GPIO.input(line_pin_middle)
-    status_left = GPIO.input(line_pin_left
+    status_left = GPIO.input(line_pin_left)
     # print('R%d   M%d   L%d'%(status_right,status_middle,status_left))
     if status_middle == 0 and status_left == 0 and status_right == 0:
         move.move(50, 'forward', 'no', 1)
