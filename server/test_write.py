@@ -10,9 +10,11 @@ def capture_spare():
         image = cv2.flip(image, -1)
         height, _, _ = image.shape
         save_image = image[int(height / 2):, :, :]
+        cv2.imshow('Save', save_image)
         cv2.imwrite("%s_%05d.png" % (filepath, 1), save_image)
         if keyValue == ord('q'):
             break
+
 if __name__ == '__main__':
     capture_spare()
     cv2.destroyAllWindows()
