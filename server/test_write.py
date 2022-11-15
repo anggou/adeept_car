@@ -11,6 +11,8 @@ def capture_spare():
         height, _, _ = image.shape
         save_image = image[int(height / 2):, :, :]
         cv2.imshow('Save', save_image)
+        if keyValue == ord('q'):
+            break
         cv2.imwrite("%s_%05d.png" % (filepath, 1), save_image)
         if keyValue == ord('q'):
             break
