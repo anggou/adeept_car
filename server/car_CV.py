@@ -4,6 +4,7 @@ import RPi.GPIO as GPIO
 import numpy as np
 from tensorflow.keras.models import load_model
 import move
+import servo
 
 line_pin_right = 19
 line_pin_middle = 16
@@ -129,3 +130,7 @@ def main():
 if __name__ == '__main__':
     main()
     cv2.destroyAllWindows()
+
+    pwm0_direction = 1
+    servo.lookleft(300)
+
