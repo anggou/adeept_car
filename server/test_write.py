@@ -5,11 +5,11 @@ def capture_spare():
     cap.set(4, 480)
     filepath = "/home/pi/adeept_car/photos/train"
     i = 0
-    carmera = "stop"
+
 
     while (cap.isOpened()):
         keyValue = cv2.waitKey(10)
-
+        carmera = "stop"
         if keyValue == ord('q'):
             break
         elif keyValue == ord('1'):
@@ -63,6 +63,8 @@ def capture_spare():
         elif carmera == "0":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 0), save_image)
             i += 1
+
+        cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
