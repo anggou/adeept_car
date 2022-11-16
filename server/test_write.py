@@ -12,25 +12,25 @@ def capture_spare():
 
         if keyValue == ord('q'):
             break
-        elif keyValue == 1:
+        elif keyValue == ord('1'):
             print("1")
             carmera = "1"
-        elif keyValue == 2:
+        elif keyValue == ord('2'):
             print("2")
             carmera = "2"
-        elif keyValue == 3:
+        elif keyValue == ord('3'):
             print("3")
             carmera = "3"
-        elif keyValue == 4:
+        elif keyValue == ord('4'):
             print("4")
             carmera = "4"
-        elif keyValue == 5:
+        elif keyValue == ord('5'):
             print("5")
             carmera = "5"
-        elif keyValue == 6:
+        elif keyValue == ord('6'):
             print("6")
             carmera = "6"
-        elif keyValue == 0:
+        elif keyValue == ord('0'):
             print("0")
             carmera = "0"
 
