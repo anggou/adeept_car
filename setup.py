@@ -37,9 +37,9 @@ for x in range(1,4):
 	if os.system("sudo pip3 install -U pip") == 0:
 		break
 
-for x in range(1,4):
-	if os.system("sudo apt-get install -y python-dev python-pip libfreetype6-dev libjpeg-dev build-essential") == 0:
-		break
+# for x in range(1,4):
+# 	if os.system("sudo apt-get install -y python-dev python-pip libfreetype6-dev libjpeg-dev build-essential") == 0:
+# 		break
 
 for x in range(1,4):
 	if os.system("sudo -H pip3 install --upgrade luma.oled") == 0:
@@ -87,17 +87,17 @@ except:
 	print('try again')
 
 
-for x in range(1,4):
-	if os.system("sudo pip3 install numpy") == 0:
-		break
+# for x in range(1,4):
+# 	if os.system("sudo pip3 install numpy") == 0:
+# 		break
 
-for x in range(1,4):
-	if os.system("sudo pip3 install opencv-contrib-python==3.4.3.18") == 0:
-		break
+# for x in range(1,4):
+# 	if os.system("sudo pip3 install opencv-contrib-python==3.4.3.18") == 0:
+# 		break
 
-for x in range(1,4):
-	if os.system("sudo apt-get -y install libqtgui4 libhdf5-dev libhdf5-serial-dev libatlas-base-dev libjasper-dev libqt4-test") == 0:
-		break
+# for x in range(1,4):
+# 	if os.system("sudo apt-get -y install libqtgui4 libhdf5-dev libhdf5-serial-dev libatlas-base-dev libjasper-dev libqt4-test") == 0:
+# 		break
 
 for x in range(1,4):
 	if os.system("sudo pip3 install imutils zmq pybase64 psutil") == 0:   ####
@@ -130,7 +130,7 @@ try:
 except:
 	pass
 
-os.system('sudo chmod 777 //home/pi/startup.sh')
+# os.system('sudo chmod 777 //home/pi/startup.sh')
 
 # replace_num('/etc/rc.local','fi','fi\n//home/pi/startup.sh start') # 시작할때, webserver 시작하기 위한 코드
 
