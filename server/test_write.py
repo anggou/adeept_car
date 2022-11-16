@@ -5,7 +5,7 @@ def capture_spare():
     cap.set(4, 480)
     filepath = "/home/pi/adeept_car/photos/train"
     i = 0
-    carmera = "0"
+    carmera = "stop"
 
     while (cap.isOpened()):
         keyValue = cv2.waitKey(10)
@@ -33,6 +33,7 @@ def capture_spare():
         elif keyValue == 0:
             print("0")
             carmera = "0"
+
 
         _, image = cap.read()
         image = cv2.flip(image, -1)
