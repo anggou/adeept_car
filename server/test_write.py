@@ -9,30 +9,30 @@ def capture_spare():
 
     while (cap.isOpened()):
         keyValue = cv2.waitKey(10)
-        carmera = "stop"
+        camera = "stop"
         if keyValue == ord('q'):
             break
         elif keyValue == ord('1'):
             print("1")
-            carmera = "1"
+            camera = "1"
         elif keyValue == ord('2'):
             print("2")
-            carmera = "2"
+            camera = "2"
         elif keyValue == ord('3'):
             print("3")
-            carmera = "3"
+            camera = "3"
         elif keyValue == ord('4'):
             print("4")
-            carmera = "4"
+            camera = "4"
         elif keyValue == ord('5'):
             print("5")
-            carmera = "5"
+            camera = "5"
         elif keyValue == ord('6'):
             print("6")
-            carmera = "6"
+            camera = "6"
         elif keyValue == ord('0'):
             print("0")
-            carmera = "0"
+            camera = "0"
 
 
         _, image = cap.read()
@@ -42,25 +42,25 @@ def capture_spare():
         save_image = cv2.resize(save_image, (200,66))
         cv2.imshow('Save', save_image)
 
-        if carmera == "1":
+        if camera == "1":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 1), save_image)
             i += 1
-        elif carmera == "2":
+        elif camera == "2":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 2), save_image)
             i += 1
-        elif carmera == "3":
+        elif camera == "3":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 3), save_image)
             i += 1
-        elif carmera == "4":
+        elif camera == "4":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 4), save_image)
             i += 1
-        elif carmera == "5":
+        elif camera == "5":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 5), save_image)
             i += 1
-        elif carmera == "6":
+        elif camera == "6":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 6), save_image)
             i += 1
-        elif carmera == "0":
+        elif camera == "0":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 0), save_image)
             i += 1
 
