@@ -1,4 +1,4 @@
-import move
+from forme import move
 import cv2
 import RPi.GPIO as GPIO
 

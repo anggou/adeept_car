@@ -2,7 +2,7 @@ import tensorflow.keras
 import numpy as np
 import cv2
 
-model = tensorflow.keras.models.load_model('keras_model.h5')  # file 집어넣기
+model = tensorflow.keras.models.load_model('../model/keras_model.h5')  # file 집어넣기
 cap = cv2.VideoCapture(0)
 size = (224, 224)
 classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']

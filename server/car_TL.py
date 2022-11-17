@@ -2,10 +2,7 @@ import time
 import cv2
 import RPi.GPIO as GPIO
 # import numpy as np
-import move
-
-
-
+from forme import move
 
 
 def img_preprocess(image):

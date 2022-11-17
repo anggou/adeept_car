@@ -17,7 +17,7 @@ model = tensorflow.keras.models.load_model('keras_model.h5')  # file 집어넣�
 cap = cv2.VideoCapture(0)
 size = (224, 224)
 classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
-
+result = []
 
 def img_preprocess(image):
     height, _, _ = image.shape
@@ -56,22 +56,28 @@ def spare_capture():
         print("spare is:", spare)
         if spare == 'Empty':
             print("Empty")  # GUI로 보내기
+            result.append('Empty')
         elif spare == 'Spindle_1':
             print("Spindle_1")  # GUI로 보내기
+            result.append('Spindle_1')
         elif spare == 'Spindle_2':
             print("Spindle_2")  # GUI로 보내기
+            result.append('Spindle_2')
         elif spare == 'Spindle_3':
             print("Spindle_3")  # GUI로 보내기
+            result.append('Spindle_3')
         elif spare == 'Spring_1':
             print("Spring_1")  # GUI로 보내기
+            result.append('Spring_1')
         elif spare == 'Spring_2':
             print("Spring_2")  # GUI로 보내기
+            result.append('Spring_2')
         elif spare == 'Spring_3':
             print("Spring_3")  # GUI로 보내기
+            result.append('Spring_3')
 
     except KeyboardInterrupt:
         pass
-
 
 def main():
     model_path = '/home/pi/adeept_car/model/lane_navigation_final.h5'

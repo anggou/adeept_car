@@ -1,1 +1,0 @@
-# adeept_picarpro

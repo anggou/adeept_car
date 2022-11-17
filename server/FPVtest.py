@@ -12,12 +12,11 @@ import base64
 import picamera
 from picamera.array import PiRGBArray
 import imutils
-import servo
 import PID
 import LED
 import datetime
 from rpi_ws281x import *
-import move
+from forme import move, servo
 import switch
 import numpy as np
 import RPIservo

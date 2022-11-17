@@ -11,8 +11,7 @@ import threading
 import time
 import os
 import LED
-import move
-import servo
+from forme import move, servo
 import switch
 servo.servo_init()
 switch.switchSetup()

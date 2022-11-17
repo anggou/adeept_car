@@ -11,7 +11,7 @@ import Adafruit_PCA9685
 import os
 import ultra
 import Kalman_filter
-import move
+from forme import move
 import RPIservo
 
 move.setup()
