@@ -20,6 +20,8 @@ pwm3_direction = 1
 pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(50)
 
+
+### 모가지
 pwm0_init = 300
 pwm0_max  = 450
 pwm0_min  = 150
@@ -77,6 +79,7 @@ def radar_scan():
 
 
 
+# a 가 b 보다 크면, b로 출력  a가 c 보다 작으면 c로 출력 그렇지 않으면 계속 a 출력
 def ctrl_range(raw, max_genout, min_genout):
 	if raw > max_genout:
 		raw_output = max_genout
@@ -112,7 +115,7 @@ def camera_ang(direction, ang):
 
 	pwm.set_all_pwm(0,org_pos)
 
-
+# speed가 300에 추가 되는값, 최대 11
 def lookleft(speed):
 	global pwm0_pos
 	if pwm0_direction:

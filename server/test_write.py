@@ -6,14 +6,16 @@ def capture_spare():
     filepath = "/home/pi/adeept_car/photos/train"
     i = 0
 
-
     while (cap.isOpened()):
         keyValue = cv2.waitKey(10)
         camera = "stop"
         if keyValue == ord('q'):
             break
+        elif keyValue == ord('0'):
+            print("0")
+            camera = "0"
         elif keyValue == ord('1'):
-            print("1")
+            print("")
             camera = "1"
         elif keyValue == ord('2'):
             print("2")
@@ -30,9 +32,7 @@ def capture_spare():
         elif keyValue == ord('6'):
             print("6")
             camera = "6"
-        elif keyValue == ord('0'):
-            print("0")
-            camera = "0"
+
 
 
         _, image = cap.read()
@@ -42,7 +42,10 @@ def capture_spare():
         save_image = cv2.resize(save_image, (200,66))
         cv2.imshow('Save', save_image)
 
-        if camera == "1":
+        if camera == "0":
+            cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 0), save_image)
+            i += 1
+        elif camera == "1":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 1), save_image)
             i += 1
         elif camera == "2":
@@ -60,9 +63,7 @@ def capture_spare():
         elif camera == "6":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 6), save_image)
             i += 1
-        elif camera == "0":
-            cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 0), save_image)
-            i += 1
+
 
         # cv2.destroyAllWindows()
 

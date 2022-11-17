@@ -16,7 +16,8 @@ status_left = GPIO.input(line_pin_left
 model = tensorflow.keras.models.load_model('keras_model.h5')  # file 집어넣기
 cap = cv2.VideoCapture(0)
 size = (224, 224)
-classes = ['empty', 'nozzle_1', 'nozzle_1', 'nozzle_1', 'pump_1', 'pump_2', 'pump_3']
+classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
+
 
 def img_preprocess(image):
     height, _, _ = image.shape
@@ -30,11 +31,12 @@ def img_preprocess(image):
 
 
 def spare_capture():
-    model_spare = load_model('/home/pi/AI_CAR/model/lane_navigation_final.h5')
-#model 설정
-    spare = "empty"
+    model_spare = load_model('/home/pi/adeept_car/model/spare_model.h5')
+    global spare, img_input
+    # model 설정
 
     try:
+        spare = "empty"
         # keyValue = cv2.waitKey(1) #키보드 입력대기
         ret, img = cap.read()
         h, w, _ = img.shape
@@ -46,38 +48,38 @@ def spare_capture():
         img_input = cv2.cvtColor(img_input, cv2.COLOR_BGR2RGB)
         img_input = (img_input.astype(np.float32) / 127.0) - 1
         img_input = np.expand_dims(img_input, axis=0)
-        cv2.imshow('pre', img_input) # 'pre' = 창제목 으로 창 띄워 보여주기
+        cv2.imshow('pre', img_input)  # 'pre' = 창제목 으로 창 띄워 보여주기
         prediction = model_spare.predict(img_input)
         idx = np.argmax(prediction)
 
         spare = int(classes[idx])
         print("spare is:", spare)
-        if spare == 'empty':
-            print("empty") # GUI로 보내기
-        elif spare == 'nozzle_1':
-            print("Nozzle 1pcs")  # GUI로 보내기
-        elif spare == 'nozzle_2':
-            print("Nozzle 2pcs") # GUI로 보내기
-        elif spare == 'nozzle_3':
-            print("Nozzle 3pcs") # GUI로 보내기
-        elif spare == 'pump_1':
-            print("Pump 1pcs") # GUI로 보내기
-        elif spare == 'pump_2':
-            print("Pump 2pcs") # GUI로 보내기
-        elif spare == 'pump_3':
-            print("Pump 3pcs") # GUI로 보내기
-        else :
-            print("unknown")
+        if spare == 'Empty':
+            print("Empty")  # GUI로 보내기
+        elif spare == 'Spindle_1':
+            print("Spindle_1")  # GUI로 보내기
+        elif spare == 'Spindle_2':
+            print("Spindle_2")  # GUI로 보내기
+        elif spare == 'Spindle_3':
+            print("Spindle_3")  # GUI로 보내기
+        elif spare == 'Spring_1':
+            print("Spring_1")  # GUI로 보내기
+        elif spare == 'Spring_2':
+            print("Spring_2")  # GUI로 보내기
+        elif spare == 'Spring_3':
+            print("Spring_3")  # GUI로 보내기
 
     except KeyboardInterrupt:
         pass
 
+
 def main():
-    model_path = '/home/pi/AI_CAR/model/lane_navigation_final.h5'
+    model_path = '/home/pi/adeept_car/model/lane_navigation_final.h5'
     model = load_model(model_path)
-    carState = "stop"
+    global pwm0_direction, carState, steering_angle
 
     try:
+        carState = "stop"
         while True:
             keyValue = cv2.waitKey(1)
             if keyValue == ord('q'):
@@ -91,7 +93,7 @@ def main():
             elif status_middle == 1 and status_left == 1 and status_right == 1:
                 carState = "capture_stop"
 
-            _, image = camera.read()
+            _, image = cap.read()
             image = cv2.flip(image, -1)
             preprocessed = img_preprocess(image)
             cv2.imshow('pre', preprocessed)
@@ -100,28 +102,33 @@ def main():
             steering_angle = int(model.predict(X)[0])
             print("predict angle:", steering_angle)
 
-            while carState == "go":
-                if steering_angle >= 70 and steering_angle <= 110:
-                    print("go")
-                    move.move(50, 'forward', 'no', 1)
-                elif steering_angle > 111:
-                    print("right")
-                    move.move(50, 'forward', 'right', 0.6)
-                elif steering_angle < 71:
-                    print("left")
-                    move.move(50, 'forward', 'left', 0.6)
+            while True:
+                if carState == "go":
+                    if steering_angle >= 70 and steering_angle <= 110:
+                        print("go")
+                        move.move(50, 'forward', 'no', 1)
+                    elif steering_angle > 111:
+                        print("right")
+                        move.move(50, 'forward', 'right', 0.6)
+                    elif steering_angle < 71:
+                        print("left")
+                        move.move(50, 'forward', 'left', 0.6)
                 if carState == "capture_stop":
+                    pwm0_direction = 1
                     move.motorStop()
-                    time.sleep(1)
+                    servo.lookleft(150)
+                    time.sleep(3)
                     spare_capture()
                     time.sleep(1)
-                    continue
+                    servo.servo_init()
+                    carState = "go"
                 if carState == "stop":
                     move.motorStop()
                     break
-            if carState == "stop":
-                move.motorStop()
-                ##### 여기서 다시 carstate = go 로 반환하는구문 추가
+
+        if carState == "stop":
+            move.motorStop()
+            ##### 여기서 다시 carstate = go 로 반환하는구문 추가
 
     except KeyboardInterrupt:
         pass
@@ -130,7 +137,3 @@ def main():
 if __name__ == '__main__':
     main()
     cv2.destroyAllWindows()
-
-    pwm0_direction = 1
-    servo.lookleft(300)
-
