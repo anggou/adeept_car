@@ -11,10 +11,10 @@ import servo
 if __name__ == '__main__':
         pwm0_direction = 1
         # move.motorStop()
-        servo.lookleft(100)
+        servo.up(160)
         time.sleep(3)
-        servo.lookright(100)
+        servo.down(160)
         # spare_capture()
-        # time.sleep(1)
+        time.sleep(1)
         servo.servo_init()
         # carState = "go"

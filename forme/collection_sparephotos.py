@@ -34,8 +34,6 @@ def capture_spare():
             print("6")
             camera = "6"
 
-
-
         _, image = cap.read()
         image = cv2.flip(image, -1)
         height, _, _ = image.shape

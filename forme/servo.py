@@ -30,7 +30,8 @@ pwm0_pos  = pwm0_init
 # 모가지좌우
 pwm1_init = 300
 pwm1_max  = 480
-pwm1_min  = 160
+pwm1_min  = 120
+# pwm1_min  = 160
 pwm1_pos  = pwm1_init
 
 # 모가지 상하
