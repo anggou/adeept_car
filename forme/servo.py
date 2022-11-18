@@ -21,22 +21,25 @@ pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(50)
 
 
-### 모가지
+### 바퀴 방향
 pwm0_init = 300
 pwm0_max  = 450
 pwm0_min  = 150
 pwm0_pos  = pwm0_init
 
+# 모가지좌우
 pwm1_init = 300
 pwm1_max  = 480
 pwm1_min  = 160
 pwm1_pos  = pwm1_init
 
+# 모가지 상하
 pwm2_init = 300
 pwm2_max  = 500
 pwm2_min  = 100
 pwm2_pos  = pwm2_init
 
+# 로봇팔 상하
 pwm3_init = 300
 pwm3_max  = 500
 pwm3_min  = 300
@@ -139,8 +142,8 @@ def lookright(speed):
 		pwm0_pos = ctrl_range(pwm0_pos, pwm0_max, pwm0_min)
 		pwm.set_pwm(0, 0, pwm0_pos)
 
-
-def up(speed):
+# 우 좌 보기
+def up(speed): #우
 	global pwm1_pos
 	if pwm1_direction:
 		pwm1_pos -= speed
@@ -153,7 +156,7 @@ def up(speed):
 	#print(pwm1_pos)
 
 
-def down(speed):
+def down(speed): #좌
 	global pwm1_pos
 	if pwm1_direction:
 		pwm1_pos += speed
