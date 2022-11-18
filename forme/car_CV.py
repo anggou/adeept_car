@@ -122,7 +122,7 @@ def main():
                 if carState == "capture_stop":
                     pwm0_direction = 1
                     move.motorStop()
-                    servo.lookleft(150)
+                    servo.up(150)
                     time.sleep(3)
                     spare_capture()
                     time.sleep(1)

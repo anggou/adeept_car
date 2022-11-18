@@ -1,4 +1,5 @@
 import cv2
+import servo
 def capture_spare():
     cap = cv2.VideoCapture(0)
     cap.set(3, 640)
@@ -69,5 +70,6 @@ def capture_spare():
 
 
 if __name__ == '__main__':
+    servo.up(150)
     capture_spare()
     cv2.destroyAllWindows()
