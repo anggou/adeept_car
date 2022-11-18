@@ -51,11 +51,8 @@ def setup():
 
 def T_L():
 
-    # print('R%d   M%d   L%d'%(status_right,status_middle,status_left))
     if status_middle == 0 and status_left == 0 and status_right == 0:
         move.move(50, 'forward', 'no', 1)
-    # elif status_middle == 1 and status_left == 1 and status_right == 1:
-    #     move.motorStop()
     elif status_right == 1:
         move.move(50, 'forward', 'right', 0.6)
     elif status_left == 1:
@@ -72,9 +69,6 @@ if __name__ == '__main__':
             T_L()
             if status_middle == 1 and status_left == 1 and status_right == 1:
                 break
-
-
-
         pass
     except KeyboardInterrupt:
         move.destroy()
