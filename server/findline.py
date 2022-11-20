@@ -72,9 +72,6 @@ if __name__ == '__main__':
             T_L()
             if status_middle == 1 and status_left == 1 and status_right == 1:
                 break
-
-
-
         pass
     except KeyboardInterrupt:
         move.destroy()
