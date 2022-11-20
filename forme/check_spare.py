@@ -7,29 +7,38 @@ cap = cv2.VideoCapture(0)
 size = (224, 224)
 classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
 
+def img_preprocess(image):
+    height, _, _ = image.shape
+    image = image[int(height/2):,:,:]
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
+    image = cv2.GaussianBlur(image, (3,3), 0)
+    image = cv2.resize(image, (200,66))
+    image = image / 255
+    return image
+
 
 def spare_capture():
-    model_spare = load_model('/home/pi/adeept_car/model/spare_model.h5')
-    global spare, img_input
+    camera = cv2.VideoCapture(-1)
+    camera.set(3, 640)
+    camera.set(4, 480)
+    model_path = '/home/pi/adeept_car/model/spare_model.h5'
+    model = load_model(model_path)
     # model 설정
 
-    try:
-        spare = "empty"
-        # keyValue = cv2.waitKey(1) #키보드 입력대기
-        ret, img = cap.read()
-        h, w, _ = img.shape
-        cx = h / 2
-        img = img[:, 200:200 + img.shape[0]]
-        img = cv2.flip(img, 1)
+    while (camera.isOpened()):
 
-        img_input = cv2.resize(img, size)
-        img_input = cv2.cvtColor(img_input, cv2.COLOR_BGR2RGB)
-        img_input = (img_input.astype(np.float32) / 127.0) - 1
-        img_input = np.expand_dims(img_input, axis=0)
-        cv2.imshow('pre', img_input)  # 'pre' = 창제목 으로 창 띄워 보여주기
-        prediction = model_spare.predict(img_input)
-        idx = np.argmax(prediction)
+        keValue = cv2.waitKey(1)
+        if keValue == ord('q'):
+            print("capture")
+        _, image = camera.read()
+        image = cv2.flip(image, -1)
+        cv2.imshow('Original', image)
 
+        preprocessed = img_preprocess(image)
+        cv2.imshow('pre', preprocessed)
+
+        X = np.asarray([preprocessed])
+        idx = int(model.predict(X)[0])
         spare = int(classes[idx])
         print("spare is:", spare)
         if spare == 'Empty':
@@ -47,8 +56,10 @@ def spare_capture():
         elif spare == 'Spring_3':
             print("Spring_3")  # GUI로 보내기
 
-    except KeyboardInterrupt:
-        pass
+        if keValue == ord('q'):
+            break
+    cv2.destroyAllWindows()
+
 
 if __name__ == '__main__':
     spare_capture()
