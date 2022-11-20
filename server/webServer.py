@@ -7,7 +7,7 @@
 
 import time
 import threading
-from forme import move
+import move
 import os
 import info
 import RPIservo

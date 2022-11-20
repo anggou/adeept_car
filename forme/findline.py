@@ -52,13 +52,13 @@ def T_L():
     status_middle = GPIO.input(line_pin_middle)
     status_left = GPIO.input(line_pin_left)
     print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
-    if status_middle == 1 and status_left == 0 and status_right == 0:
+    if status_middle == 0 and status_left == 0 and status_right == 0:
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         move.move(30, 'forward', 'no', 1)
-    elif status_left == 1 and status_right == 0:
+    elif status_middle == 0 and status_left == 1 and status_right == 0:
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         move.move(30, 'forward', 'right', 0.6)
-    elif status_right == 1 and status_left == 0:
+    elif status_middle == 0 and status_left == 0 and status_right == 1:
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         move.move(30, 'forward', 'left', 0.6)
     else:
@@ -72,6 +72,9 @@ if __name__ == '__main__':
         move.setup()
         while 1:
             T_L()
+            status_right = GPIO.input(line_pin_right)
+            status_middle = GPIO.input(line_pin_middle)
+            status_left = GPIO.input(line_pin_left)
             if status_middle == 1 and status_left == 1 and status_right == 1:
                 break
         pass
