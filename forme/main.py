@@ -1,8 +1,9 @@
-import tensorflow.keras
+from tensorflow.keras.models import load_model
 import numpy as np
 import cv2
+import tensorflow as tf
 
-model = tensorflow.keras.models.load_model('keras_model.h5')
+model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
 
 cap = cv2.VideoCapture(0)
 
@@ -33,3 +34,4 @@ while cap.isOpened():
     cv2.imshow('result', img)
     if cv2.waitKey(1) == ord('q'):
         break
+
