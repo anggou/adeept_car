@@ -9,50 +9,39 @@ import servo
 line_pin_right = 19
 line_pin_middle = 16
 line_pin_left = 20
-status_right = GPIO.input(line_pin_right)
-status_middle = GPIO.input(line_pin_middle)
-status_left = GPIO.input(line_pin_left
 
-model = tensorflow.keras.models.load_model('keras_model.h5')  # file 집어넣기
 cap = cv2.VideoCapture(0)
-size = (224, 224)
-classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
+spare = "None"
 result = []
+carState = "stop"
 
 def img_preprocess(image):
     height, _, _ = image.shape
     image = image[int(height / 2):, :, :]
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
+    # image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
     image = cv2.resize(image, (200, 66))
-    image = cv2.GaussianBlur(image, (5, 5), 0)
-    _, image = cv2.threshold(image, 160, 255, cv2.THRESH_BINARY_INV)
+    # image = cv2.GaussianBlur(image, (5, 5), 0)
+    _, image = cv2.threshold(image, 160, 255, cv2.THRESH_BINARY_INV) #확인확인
     image = image / 255
     return image
 
-
 def spare_capture():
     model_spare = load_model('/home/pi/adeept_car/model/spare_model.h5')
-    global spare, img_input
+    global spare, result
     # model 설정
 
     try:
-        spare = "empty"
-        # keyValue = cv2.waitKey(1) #키보드 입력대기
-        ret, img = cap.read()
-        h, w, _ = img.shape
-        cx = h / 2
-        img = img[:, 200:200 + img.shape[0]]
-        img = cv2.flip(img, 1)
-
-        img_input = cv2.resize(img, size)
-        img_input = cv2.cvtColor(img_input, cv2.COLOR_BGR2RGB)
-        img_input = (img_input.astype(np.float32) / 127.0) - 1
-        img_input = np.expand_dims(img_input, axis=0)
-        cv2.imshow('pre', img_input)  # 'pre' = 창제목 으로 창 띄워 보여주기
-        prediction = model_spare.predict(img_input)
-        idx = np.argmax(prediction)
-
+        spare = "None"
+        classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
+        _, image = cap.read()
+        image = cv2.flip(image, 1)
+        preprocessed = img_preprocess(image)
+        cv2.imshow('pre', preprocessed)
+        X = np.asarray([preprocessed])
+        idx = int(model.predict(X)[0])
+        print("idx :", idx)
         spare = int(classes[idx])
+
         print("spare is:", spare)
         if spare == 'Empty':
             print("Empty")  # GUI로 보내기
@@ -79,14 +68,49 @@ def spare_capture():
     except KeyboardInterrupt:
         pass
 
-def main():
-    model_path = '/home/pi/adeept_car/model/lane_navigation_final.h5'
-    model = load_model(model_path)
-    global pwm0_direction, carState, steering_angle
+def setup():
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(line_pin_right, GPIO.IN)
+    GPIO.setup(line_pin_middle, GPIO.IN)
+    GPIO.setup(line_pin_left, GPIO.IN)
+    # motor.setup()
 
+def T_L():
+    status_right = GPIO.input(line_pin_right)
+    status_middle = GPIO.input(line_pin_middle)
+    status_left = GPIO.input(line_pin_left)
+    if status_middle == 0 and status_left == 0 and status_right == 0:
+        servo.ahead()
+        move.move(25, 'forward', 'no', 1)
+        print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
+    elif status_middle == 1 and status_left == 1 and status_right == 1:
+        print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
+        move.motorStop()
+    elif status_middle == 0 and status_left == 1 and status_right == 0:
+        print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
+        servo.lookright(10)
+        move.move(25, 'forward', 'no', 0.6)
+    elif status_middle == 0 and status_left == 0 and status_right == 1:
+        print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
+        servo.lookleft(10)
+        move.move(25, 'forward', 'no', 0.6)
+    else:
+        print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
+        move.move(30, 'backward', 'no', 1)
+        time.sleep(1)
+
+
+def main():
+    check_spare = '/home/pi/adeept_car/model/checkspare_final.h5'
+    model = load_model(check_spare)
+    global pwm0_direction, carState
     try:
         carState = "stop"
         while True:
+            status_right = GPIO.input(line_pin_right)
+            status_middle = GPIO.input(line_pin_middle)
+            status_left = GPIO.input(line_pin_left)
             keyValue = cv2.waitKey(1)
             if keyValue == ord('q'):
                 break
@@ -110,24 +134,24 @@ def main():
 
             while True:
                 if carState == "go":
-                    if steering_angle >= 70 and steering_angle <= 110:
-                        print("go")
-                        move.move(50, 'forward', 'no', 1)
-                    elif steering_angle > 111:
-                        print("right")
-                        move.move(50, 'forward', 'right', 0.6)
-                    elif steering_angle < 71:
-                        print("left")
-                        move.move(50, 'forward', 'left', 0.6)
+                    try:
+                        setup()
+                        move.setup()
+                        while 1:
+                            pwm0_direction = 1
+                            T_L()
+                        pass
+                    except KeyboardInterrupt:
+                        move.destroy()
                 if carState == "capture_stop":
-                    pwm0_direction = 1
                     move.motorStop()
-                    servo.up(150)
+                    servo.up(180)
                     time.sleep(3)
                     spare_capture()
                     time.sleep(1)
-                    servo.servo_init()
-                    carState = "go"
+                    servo.down(180)
+                    time.sleep(1)
+                    continue
                 if carState == "stop":
                     move.motorStop()
                     break
@@ -139,7 +163,14 @@ def main():
     except KeyboardInterrupt:
         pass
 
+    # main()
+    # cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    main()
-    cv2.destroyAllWindows()
+    try:
+        setup()
+        move.setup()
+        main()
+    except KeyboardInterrupt:
+        move.destroy()
+        cv2.destroyAllWindows()

@@ -2,8 +2,8 @@ import cv2
 import servo
 def capture_spare():
     cap = cv2.VideoCapture(0)
-    cap.set(3, 640)
-    cap.set(4, 480)
+#     cap.set(3, 640)
+#     cap.set(4, 480)
     filepath = "/home/pi/adeept_car/photos/train"
     i = 0
 
@@ -35,39 +35,46 @@ def capture_spare():
             camera = "6"
 
         _, image = cap.read()
-        image = cv2.flip(image, -1)
-        height, _, _ = image.shape
-        save_image = image[int(height / 2):, :, :]
-        save_image = cv2.resize(save_image, (200,66))
+        save_image = cv2.flip(image, 1)
+#         height, _, _ = image.shape
+#         save_image = image[int(height / 2):, :, :]
+#         save_image = cv2.resize(save_image, (200,66))
         cv2.imshow('Save', save_image)
 
         if camera == "0":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 0), save_image)
             i += 1
+            print(i)
         elif camera == "1":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 1), save_image)
             i += 1
+            print(i)
         elif camera == "2":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 2), save_image)
             i += 1
+            print(i)
         elif camera == "3":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 3), save_image)
             i += 1
+            print(i)
         elif camera == "4":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 4), save_image)
             i += 1
+            print(i)
         elif camera == "5":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 5), save_image)
             i += 1
+            print(i)
         elif camera == "6":
             cv2.imwrite("%s_%05d_%03d.png" % (filepath, i, 6), save_image)
             i += 1
+            print(i)
 
 
         # cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
-    servo.up(150)
+    servo.up(180)
     capture_spare()
     cv2.destroyAllWindows()
