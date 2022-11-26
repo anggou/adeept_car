@@ -3,35 +3,46 @@ from tkinter import *
 from PIL import Image
 from PIL import ImageTk
 
-
-def convert_to_tkimage():
-    global src
-    gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
-    _, binary = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY)
-    img = Image.fromarray(binary)
-    imgtk = ImageTk.PhotoImage(image=img)
-    label.config(image=imgtk)
-    label.image = imgtk
-
+path ="/home/pi/adeept_car/photos/train_00000_001.png"
 window=Tk()
-window.title("YUN DAE HEE")
-window.geometry("640x480+100+100")
+window.title("Space Stock")
+window.geometry("640x300")
 
-cap = cv2.VideoCapture(0)
-_, image = cap.read()
-src = cv2.flip(image, 1)
-# src = cv2.imread("giraffe.jpg")
-src = cv2.resize(src, (640, 400))
-img = cv2.cvtColor(src, cv2.COLOR_BGR2RGB)
+def readtoimg(image):
+    src = cv2.flip(image, 1)
+    src = cv2.resize(src, (210, 150))
+    img = cv2.cvtColor(src, cv2.COLOR_BGR2RGB)
+    img = Image.fromarray(img)
+    img = ImageTk.PhotoImage(image=img)
+    return img
+    
 
-img = Image.fromarray(img)
-imgtk = ImageTk.PhotoImage(image=img)
-# 사진 찍는걸로 추정
-label = Label(window, image=imgtk)
-label.pack(side="top")
+image = cv2.imread("/home/pi/adeept_car/photos/train_00000_001.png",1)
+imgtk1 = readtoimg(image)
 
-spare = Label(window, text='1111111111')
-spare.place(x=10,y=10)
+image = cv2.imread("/home/pi/adeept_car/photos/train_00001_002.png",1)
+imgtk2 = readtoimg(image)
+
+image = cv2.imread("/home/pi/adeept_car/photos/train_00002_003.png",1)
+imgtk3 = readtoimg(image)
+
+
+label1 = Label(window, image=imgtk1)
+label2 = Label(window, image=imgtk2)
+label3 = Label(window, image=imgtk3)
+label1.pack(side="left")
+label2.pack(side="left")
+label3.pack(side="left")
+
+
+spare1 = Label(window, text='1111111111')
+spare1.place(x=20,y=250)
+
+spare2 = Label(window, text='2222')
+spare2.place(x=20+210,y=250)
+
+spare3 = Label(window, text='3333')
+spare3.place(x=20+420,y=250)
 
 text = Text(window, width = 1 , height= 1)
 text.pack(side="bottom")

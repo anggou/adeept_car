@@ -14,27 +14,23 @@ cap = cv2.VideoCapture(0)
 result = []
 spare="none"
 servo.servo_init()
-
-def img_preprocess(image):
-    height, _, _ = image.shape
-    image = image[int(height / 2):, :, :]
-    image = cv2.resize(image, (200, 66))
-    _, image = cv2.threshold(image, 160, 255, cv2.THRESH_BINARY_INV)
-    image = image / 255
-    return image
+i=0
+path = "/home/pi/adeept_car/photos/spare"
+classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
+model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
 
 
 def spare_capture():
-    global spare, cap, result
-    model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
+    global spare, cap, result, i, classes, model
+    
     size = (224, 224)
-    classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
     ret, img = cap.read()
     h, w, _ = img.shape
     cx = h / 2
     img = img[:, 200:200 + img.shape[0]]
     img = cv2.flip(img, 1)
-    cv2.imshow('result', img)
+    cv2.imwrite("%s_%05d.png" % (path, i), img)
+    i+=1
     img_input = cv2.resize(img, size)
     img_input = cv2.cvtColor(img_input, cv2.COLOR_BGR2RGB)
     img_input = (img_input.astype(np.float32) / 127.0) - 1
@@ -74,6 +70,7 @@ def setup():
     GPIO.setup(line_pin_middle, GPIO.IN)
     GPIO.setup(line_pin_left, GPIO.IN)
     # motor.setup()
+    
 def just_go():
     move.move(25, 'forward', 'no', 1)
     time.sleep(0.5)
@@ -100,18 +97,20 @@ def Tracking_line():
         time.sleep(1)
 
 
+
 try:
     while True:
         setup()
         move.setup()
-        status_right = GPIO.input(line_pin_right)
-        status_middle = GPIO.input(line_pin_middle)
-        status_left = GPIO.input(line_pin_left)
         keyValue = cv2.waitKey(1)
         _, image = cap.read()
         image = cv2.flip(image, -1)
         cv2.imshow('pre', image)
 
+        status_right = GPIO.input(line_pin_right)
+        status_middle = GPIO.input(line_pin_middle)
+        status_left = GPIO.input(line_pin_left)
+        
         if keyValue == ord('q'):
             break
         elif keyValue == 82:
@@ -120,26 +119,28 @@ try:
         elif keyValue == 84:
             print("stop")
             carState = "stop"
-        elif status_middle == 1 and status_left == 1 and status_right == 1:
-            carState = "capture_stop"
-            print("capture_stop")
+        elif carState == "stop":
+            servo.lookdown(50)
 
         while carState == "go":
             status_right = GPIO.input(line_pin_right)
             status_middle = GPIO.input(line_pin_middle)
             status_left = GPIO.input(line_pin_left)
             setup()
-            just_go()
             Tracking_line()
 
             if status_middle == 1 and status_left == 1 and status_right == 1:
                 move.motorStop()
                 servo.up(180)
-                spare_capture()
+#                 spare_capture()
                 servo.down(180)
                 print("capture")
                 print(result)
-            if keyValue == ord('q'):
+                
+            if len(result)==2:
+                move.motorStop()
+                print(len(result))
+                carState = "stop"
                 break
 
 except KeyboardInterrupt:

@@ -7,7 +7,8 @@ import servo
 
 
 if __name__ == '__main__':
+    servo.servo_init()
     move.setup()
-    servo.up(180)
+    servo.lookup(50)
     time.sleep(2)
-    servo.down(180)
+    servo.lookdown(50)
