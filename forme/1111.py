@@ -104,41 +104,45 @@ def Tracking_line():
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         move.move(30, 'backward', 'no', 1)
         time.sleep(1)
+try:
+    while True:
+        setup()
+        move.setup()
+        status_right = GPIO.input(line_pin_right)
+        status_middle = GPIO.input(line_pin_middle)
+        status_left = GPIO.input(line_pin_left)
+        keyValue = cv2.waitKey(1)
+        _, image = cap.read()
+        image = cv2.flip(image, -1)
+        cv2.imshow('pre', image)
 
-while True:
-    setup()
-    move.setup()
-    status_right = GPIO.input(line_pin_right)
-    status_middle = GPIO.input(line_pin_middle)
-    status_left = GPIO.input(line_pin_left)
-    keyValue = cv2.waitKey(1)
-    _, image = cap.read()
-    image = cv2.flip(image, -1)
-    cv2.imshow('pre', image)
+        if keyValue == ord('q'):
+            break
+        elif keyValue == 82:
+            print("go")
+            carState = "go"
+        elif keyValue == 84:
+            print("stop")
+            carState = "stop"
+        elif status_middle == 1 and status_left == 1 and status_right == 1:
+            carState = "capture_stop"
+            print("capture_stop")
 
-    if keyValue == ord('q'):
-        break
-    elif keyValue == 82:
-        print("go")
-        carState = "go"
-    elif keyValue == 84:
-        print("stop")
-        carState = "stop"
-    elif status_middle == 1 and status_left == 1 and status_right == 1:
-        carState = "capture_stop"
-        print("capture_stop")
+        while carState == "go":
+            try:
+                Tracking_line()
+            except status_middle == 1 and status_left == 1 and status_right == 1:
+                move.destroy()
+                spare_capture()
+                print("capture")
+                pass
 
-    while carState == "go":
-        try:
-            Tracking_line()
-        except status_middle == 1 and status_left == 1 and status_right == 1:
-            move.destroy()
-            spare_capture()
-            print("capture")
-            pass
+        if carState == "stop":
+            move.motorStop()
+            break
 
-    if carState == "stop":
-        move.motorStop()
-        break
+except KeyboardInterrupt:
+    pass
+
 
 
