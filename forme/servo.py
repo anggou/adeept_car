@@ -222,7 +222,7 @@ def loose(speed):
 def servo_init():
 	pwm.set_pwm(0, 0, pwm0_pos)
 	pwm.set_pwm(1, 0, pwm1_pos)
-	pwm.set_pwm(2, 0, pwm2_max)
+	pwm.set_pwm(2, 0, pwm2_pos)
 	pwm.set_pwm(3, 0, pwm3_pos)
 
 
