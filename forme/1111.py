@@ -36,7 +36,6 @@ def spare_capture():
     else:
         print("cc")
 
-    cap.release()
     cv2.destroyAllWindows()
 
     h, w, _ = img.shape
@@ -118,9 +117,15 @@ try:
         setup()
         move.setup()
         keyValue = cv2.waitKey(1)
-        _, image = cap.read()
-        image = cv2.flip(image, -1)
-        cv2.imshow('pre', image)
+        if cap.isOpened():
+            while True:
+                ret, img = cap.read()
+                if ret:
+                    cv2.imshow('camera', img)
+                    if cv2.waitKey(1) != -1:
+                        break
+        else:
+            print("cc")
 
         status_right = GPIO.input(line_pin_right)
         status_middle = GPIO.input(line_pin_middle)
