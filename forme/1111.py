@@ -118,50 +118,47 @@ try:
         move.setup()
         keyValue = cv2.waitKey(1)
         if cap.isOpened():
-            while True:
-                ret, img = cap.read()
-                if ret:
-                    cv2.imshow('camera', img)
-                    if cv2.waitKey(1) != -1:
+            ret, img = cap.read()
+            if ret:
+                cv2.imshow('camera', img)
+                if keyValue == ord('q'):
+                    break
+                elif keyValue == 82:
+                    print("go")
+                    carState = "go"
+                elif keyValue == 84:
+                    print("stop")
+                    carState = "stop"
+                elif carState == "stop":
+                    servo.lookdown(50)
+
+                while carState == "go":
+                    status_right = GPIO.input(line_pin_right)
+                    status_middle = GPIO.input(line_pin_middle)
+                    status_left = GPIO.input(line_pin_left)
+                    setup()
+                    Tracking_line()
+
+                    if status_middle == 1 and status_left == 1 and status_right == 1:
+                        move.motorStop()
+                        servo.up(180)
+                        #                 spare_capture()
+                        servo.down(180)
+                        print("capture")
+                        print(result)
+
+                    if len(result) == 2:
+                        move.motorStop()
+                        print(len(result))
+                        carState = "stop"
                         break
-        else:
-            print("cc")
+                if cv2.waitKey(1) != -1:
+                    break
 
         status_right = GPIO.input(line_pin_right)
         status_middle = GPIO.input(line_pin_middle)
         status_left = GPIO.input(line_pin_left)
-        
-        if keyValue == ord('q'):
-            break
-        elif keyValue == 82:
-            print("go")
-            carState = "go"
-        elif keyValue == 84:
-            print("stop")
-            carState = "stop"
-        elif carState == "stop":
-            servo.lookdown(50)
 
-        while carState == "go":
-            status_right = GPIO.input(line_pin_right)
-            status_middle = GPIO.input(line_pin_middle)
-            status_left = GPIO.input(line_pin_left)
-            setup()
-            Tracking_line()
-
-            if status_middle == 1 and status_left == 1 and status_right == 1:
-                move.motorStop()
-                servo.up(180)
-#                 spare_capture()
-                servo.down(180)
-                print("capture")
-                print(result)
-                
-            if len(result)==2:
-                move.motorStop()
-                print(len(result))
-                carState = "stop"
-                break
 
 except KeyboardInterrupt:
     pass
