@@ -11,6 +11,8 @@ line_pin_middle = 16
 line_pin_left = 20
 carState = "none"
 cap = cv2.VideoCapture(0)
+result = []
+spare="none"
 
 def img_preprocess(image):
     height, _, _ = image.shape
@@ -19,13 +21,13 @@ def img_preprocess(image):
     _, image = cv2.threshold(image, 160, 255, cv2.THRESH_BINARY_INV)
     image = image / 255
     return image
+
+
 def spare_capture():
     global spare, cap
     model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
     size = (224, 224)
     classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
-    servo.up(180)
-    servo.down(180)
 
     while cap.isOpened():
         ret, img = cap.read()
@@ -46,7 +48,7 @@ def spare_capture():
         prediction = model.predict(img_input)
         idx = np.argmax(prediction)
         print("idx :", idx)
-        spare = int(classes[idx])
+        spare = classes[idx]
 
         print("spare is:", spare)
         if spare == 'Empty':
@@ -76,6 +78,7 @@ def spare_capture():
         if cv2.waitKey(1) == ord('q'):
             break
 
+
 def setup():
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
@@ -84,8 +87,8 @@ def setup():
     GPIO.setup(line_pin_left, GPIO.IN)
     # motor.setup()
 
-def Tracking_line():
 
+def Tracking_line():
     if status_middle == 0 and status_left == 0 and status_right == 0:
         servo.ahead()
         move.move(25, 'forward', 'no', 1)
@@ -105,6 +108,8 @@ def Tracking_line():
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         move.move(30, 'backward', 'no', 1)
         time.sleep(1)
+
+
 try:
     while True:
         setup()
@@ -138,13 +143,12 @@ try:
 
             if status_middle == 1 and status_left == 1 and status_right == 1:
                 move.motorStop()
+                servo.up(180)
                 spare_capture()
+                servo.down(180)
                 print("capture")
             if keyValue == ord('q'):
                 break
 
 except KeyboardInterrupt:
     pass
-
-
-
