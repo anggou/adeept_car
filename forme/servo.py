@@ -236,9 +236,9 @@ def clean_all():
 def ahead():
 	global pwm0_pos, pwm1_pos
 	pwm.set_pwm(0, 0, pwm0_init)
-	pwm.set_pwm(1, 0, (pwm1_max-20))
+	pwm.set_pwm(1, 0, pwm1_init)
 	pwm0_pos = pwm0_init
-	pwm1_pos = pwm1_max-20
+	pwm1_pos = pwm1_init
 
 
 def get_direction():

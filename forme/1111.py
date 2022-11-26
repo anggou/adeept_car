@@ -12,8 +12,9 @@ line_pin_left = 20
 carState = "none"
 cap = cv2.VideoCapture(0)
 result = []
-spare="none"
+spare = "none"
 servo.servo_init()
+
 
 def img_preprocess(image):
     height, _, _ = image.shape
@@ -74,12 +75,16 @@ def setup():
     GPIO.setup(line_pin_middle, GPIO.IN)
     GPIO.setup(line_pin_left, GPIO.IN)
     # motor.setup()
+
+
 def just_go():
     move.move(25, 'forward', 'no', 1)
     time.sleep(0.5)
 
+
 def Tracking_line():
     if status_middle == 0 and status_left == 0 and status_right == 0:
+        servo.ahead()
         move.move(25, 'forward', 'no', 1)
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
     elif status_middle == 1 and status_left == 1 and status_right == 1:
@@ -124,20 +129,22 @@ try:
             print("capture_stop")
 
         while carState == "go":
-            status_right = GPIO.input(line_pin_right)
-            status_middle = GPIO.input(line_pin_middle)
-            status_left = GPIO.input(line_pin_left)
+
             setup()
             just_go()
-            Tracking_line()
-
-            if status_middle == 1 and status_left == 1 and status_right == 1:
+            try :
+                status_right = GPIO.input(line_pin_right)
+                status_middle = GPIO.input(line_pin_middle)
+                status_left = GPIO.input(line_pin_left)
+                Tracking_line()
+            except status_middle == 1 and status_left == 1 and status_right == 1:
                 move.motorStop()
                 servo.up(180)
                 spare_capture()
                 servo.down(180)
                 print("capture")
                 print(result)
+                pass
             if keyValue == ord('q'):
                 break
 
