@@ -160,13 +160,9 @@ def main():
 
         if carState == "stop":
             move.motorStop()
-            ##### 여기서 다시 carstate = go 로 반환하는구문 추가
 
     except KeyboardInterrupt:
         pass
-
-    # main()
-    # cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
