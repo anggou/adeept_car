@@ -13,6 +13,7 @@ carState = "none"
 cap = cv2.VideoCapture(0)
 result = []
 spare="none"
+servo.servo_init()
 
 def img_preprocess(image):
     height, _, _ = image.shape
@@ -24,7 +25,7 @@ def img_preprocess(image):
 
 
 def spare_capture():
-    global spare, cap
+    global spare, cap, result
     model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
     size = (224, 224)
     classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
@@ -136,6 +137,7 @@ try:
                 spare_capture()
                 servo.down(180)
                 print("capture")
+                print(result)
             if keyValue == ord('q'):
                 break
 

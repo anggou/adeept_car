@@ -56,21 +56,20 @@ def T_L():
     status_left = GPIO.input(line_pin_left)
     # print('R%d   M%d   L%d'%(status_right,status_middle,status_left))
     if status_middle == 0 and status_left == 0 and status_right == 0:
-        servo.ahead()
         move.move(25, 'forward', 'no', 1)
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
     elif status_middle == 1 and status_left == 1 and status_right == 1:
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         move.motorStop()
-    elif status_middle == 0 and status_left == 1 and status_right == 0:
+    elif (status_middle == 0 and status_left == 1 and status_right == 0) and (status_middle == 1 and status_left == 1 and status_right == 0) :
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         # move.move(60, 'forward', 'left', 0.6)
         servo.lookright(10)
-        move.move(25, 'forward', 'no', 0.6)
-    elif status_middle == 0 and status_left == 0 and status_right == 1:
+        move.move(20, 'forward', 'no', 0.6)
+    elif (status_middle == 0 and status_left == 0 and status_right == 1) and (status_middle == 1 and status_left == 0 and status_right == 1):
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         servo.lookleft(10)
-        move.move(25, 'forward', 'no', 0.6)
+        move.move(20, 'forward', 'no', 0.6)
         # move.move(60, 'forward', 'right', 0.6)
     else:
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
@@ -80,9 +79,11 @@ def T_L():
 
 if __name__ == '__main__':
     try:
-        pwm0_direction = 1
+        # pwm0_direction = 1
         setup()
         move.setup()
+        servo.servo_init()
+
         while 1:
             T_L()
         pass
