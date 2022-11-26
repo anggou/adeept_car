@@ -4,6 +4,7 @@ import RPi.GPIO as GPIO
 import move
 import servo
 from tensorflow.keras.models import load_model
+import numpy as np
 
 line_pin_right = 19
 line_pin_middle = 16
@@ -129,15 +130,17 @@ try:
             print("capture_stop")
 
         while carState == "go":
-
+            status_right = GPIO.input(line_pin_right)
+            status_middle = GPIO.input(line_pin_middle)
+            status_left = GPIO.input(line_pin_left)
             setup()
-            move.setup()
             Tracking_line()
 
             if status_middle == 1 and status_left == 1 and status_right == 1:
                 move.motorStop()
                 spare_capture()
                 print("capture")
+            if keyValue == ord('q'):
                 break
 
 except KeyboardInterrupt:
