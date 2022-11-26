@@ -73,11 +73,12 @@ def setup():
     GPIO.setup(line_pin_middle, GPIO.IN)
     GPIO.setup(line_pin_left, GPIO.IN)
     # motor.setup()
-
+def just_go():
+    move.move(25, 'forward', 'no', 1)
+    time.sleep(0.5)
 
 def Tracking_line():
     if status_middle == 0 and status_left == 0 and status_right == 0:
-        servo.ahead()
         move.move(25, 'forward', 'no', 1)
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
     elif status_middle == 1 and status_left == 1 and status_right == 1:
@@ -126,6 +127,7 @@ try:
             status_middle = GPIO.input(line_pin_middle)
             status_left = GPIO.input(line_pin_left)
             setup()
+            just_go()
             Tracking_line()
 
             if status_middle == 1 and status_left == 1 and status_right == 1:
