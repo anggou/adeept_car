@@ -152,8 +152,6 @@ def main():
                     move.destroy()
                     pass
 
-              time.sleep(2)
-
             if carState == "stop":
                 move.motorStop()
                 break
