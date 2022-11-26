@@ -5,7 +5,6 @@ from tensorflow.keras.models import load_model
 
 cap = cv2.VideoCapture(-1)
 if cap.isOpened():
-    
     while True:
         ret, image = cap.read()
         if ret:
@@ -14,6 +13,6 @@ if cap.isOpened():
                 break
 else:
     print("cc")
-        
+
 cap.release()
 cv2.destroyAllWindows()

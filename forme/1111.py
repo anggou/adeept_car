@@ -18,19 +18,34 @@ i=0
 path = "/home/pi/adeept_car/photos/spare"
 classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
 model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
+img="none"
 
 
 def spare_capture():
-    global spare, cap, result, i, classes, model
+    global spare, cap, result, i, classes, model, img
     
     size = (224, 224)
-    ret, img = cap.read()
+
+    if cap.isOpened():
+        while True:
+            ret, img = cap.read()
+            if ret:
+                cv2.imshow('camera', img)
+                if cv2.waitKey(1) != -1:
+                    break
+    else:
+        print("cc")
+
+    cap.release()
+    cv2.destroyAllWindows()
+
     h, w, _ = img.shape
     cx = h / 2
     img = img[:, 200:200 + img.shape[0]]
     img = cv2.flip(img, 1)
     cv2.imwrite("%s_%05d.png" % (path, i), img)
     i+=1
+    cap.release()
     img_input = cv2.resize(img, size)
     img_input = cv2.cvtColor(img_input, cv2.COLOR_BGR2RGB)
     img_input = (img_input.astype(np.float32) / 127.0) - 1
