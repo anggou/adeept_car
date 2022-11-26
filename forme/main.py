@@ -3,7 +3,8 @@ import numpy as np
 import cv2
 import tensorflow as tf
 
-model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
+model = load_model('keras_model.h5')
+# model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
 
 cap = cv2.VideoCapture(0)
 

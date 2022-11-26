@@ -1,5 +1,5 @@
 import cv2
-import tkinter
+from tkinter import *
 from PIL import Image
 from PIL import ImageTk
 
@@ -13,7 +13,7 @@ def convert_to_tkimage():
     label.config(image=imgtk)
     label.image = imgtk
 
-window=tkinter.Tk()
+window=Tk()
 window.title("YUN DAE HEE")
 window.geometry("640x480+100+100")
 
@@ -23,11 +23,20 @@ src = cv2.flip(image, 1)
 # src = cv2.imread("giraffe.jpg")
 src = cv2.resize(src, (640, 400))
 img = cv2.cvtColor(src, cv2.COLOR_BGR2RGB)
+
 img = Image.fromarray(img)
 imgtk = ImageTk.PhotoImage(image=img)
-label = tkinter.Label(window, image=imgtk)
+# 사진 찍는걸로 추정
+label = Label(window, image=imgtk)
 label.pack(side="top")
-button = tkinter.Button(window, text="이진화 처리", command=convert_to_tkimage)
+
+spare = Label(window, text='1111111111')
+spare.place(x=10,y=10)
+
+text = Text(window, width = 1 , height= 1)
+text.pack(side="bottom")
+
+button = Button(window, text="Spare_results", command=convert_to_tkimage)
 button.pack(side="bottom", expand=True, fill='both')
 window.mainloop()
 

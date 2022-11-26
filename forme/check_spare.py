@@ -26,7 +26,6 @@ def spare_capture():
     # model 설정
 
     while (camera.isOpened()):
-
         keValue = cv2.waitKey(1)
         if keValue == ord('q'):
             print("capture")
