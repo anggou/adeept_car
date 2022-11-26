@@ -129,19 +129,16 @@ try:
             print("capture_stop")
 
         while carState == "go":
-            try:
-                setup()
-                move.setup()
-                Tracking_line()
-            except status_middle == 1 and status_left == 1 and status_right == 1:
-                move.destroy()
+
+            setup()
+            move.setup()
+            Tracking_line()
+
+            if status_middle == 1 and status_left == 1 and status_right == 1:
+                move.motorStop()
                 spare_capture()
                 print("capture")
-                pass
-
-        if carState == "stop":
-            move.motorStop()
-            break
+                break
 
 except KeyboardInterrupt:
     pass
