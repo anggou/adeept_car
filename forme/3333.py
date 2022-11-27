@@ -24,6 +24,7 @@ spare_number = 3
 file = "/home/pi/adeept_car/photos/spare"
 e = 0
 
+
 def capture_spare():
     global e
     _, image = cap.read()
@@ -150,8 +151,8 @@ def show_gui(number):
 
 
 try:
-    global result
     while True:
+        global result
         setup()
         move.setup()
         keyValue = cv2.waitKey(1)
@@ -182,6 +183,7 @@ try:
             move.motorStop()
 
         while carState == "go":
+            f = 0
             status_right = GPIO.input(line_pin_right)
             status_middle = GPIO.input(line_pin_middle)
             status_left = GPIO.input(line_pin_left)
@@ -195,12 +197,13 @@ try:
                 capture_spare()
                 servo.down(180)
                 print("capture")
-                print(result)
+                f += 1
+                print(f)
                 just_go(1)
 
-            if len(result) == spare_number:
+            if f == spare_number:
                 move.motorStop()
-                print(len(result))
+                print(f)
                 carState = "all_stop"
 
                 break
