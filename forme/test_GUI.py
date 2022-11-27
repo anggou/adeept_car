@@ -3,10 +3,7 @@ from tkinter import *
 from PIL import Image
 from PIL import ImageTk
 
-path ="/home/pi/adeept_car/photos/train_00000_001.png"
-window=Tk()
-window.title("Space Stock")
-window.geometry("640x300")
+
 
 def readtoimg(image):
     src = cv2.flip(image, 1)
@@ -16,6 +13,10 @@ def readtoimg(image):
     img = ImageTk.PhotoImage(image=img)
     return img
     
+path ="/home/pi/adeept_car/photos/train_00000_001.png"
+window=Tk()
+window.title("Space Stock")
+window.geometry("640x300")
 
 image = cv2.imread("/home/pi/adeept_car/photos/train_00000_001.png",1)
 imgtk1 = readtoimg(image)

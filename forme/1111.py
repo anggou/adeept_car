@@ -21,6 +21,8 @@ model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
 img="none"
 
 
+
+
 def spare_capture():
     global spare, cap, result, i, classes, model, img
     
