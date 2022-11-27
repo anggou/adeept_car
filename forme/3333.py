@@ -76,9 +76,9 @@ def setup():
     # motor.setup()
 
 
-def just_go():
+def just_go(sec):
     move.move(25, 'forward', 'no', 1)
-    time.sleep(0.5)
+    time.sleep(sec)
 
 
 def Tracking_line():
@@ -119,7 +119,7 @@ def show_gui(number):
     window = Tk()
     window.title("Space Stock")
     window.geometry("640x300")
-    file = "/home/pi/adeept_car/photos/train_001.png"
+    file = "/home/pi/adeept_car/photos/spare"
 
     for i in range(number):
         image = cv2.imread("%s_%05d.png" % (file, i), 1)
@@ -143,6 +143,7 @@ def show_gui(number):
 
 
 try:
+    global result
     while True:
         setup()
         move.setup()
@@ -166,6 +167,7 @@ try:
         elif carState == "all_stop":
             servo.servo_init()
             servo.lookdown(100)
+            show_gui(len(result))
 
         elif carState == "stop":
             time.sleep(3)
@@ -181,16 +183,17 @@ try:
             if status_middle == 1 and status_left == 1 and status_right == 1:
                 move.motorStop()
                 servo.up(180)
+                time.sleep(4)
                 spare_capture()
                 servo.down(180)
                 print("capture")
                 print(result)
+                just_go(1)
 
             if len(result) == spare_number:
                 move.motorStop()
                 print(len(result))
                 carState = "all_stop"
-                show_gui(len(result))
 
                 break
 
