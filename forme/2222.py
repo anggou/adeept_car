@@ -82,14 +82,16 @@ def Tracking_line():
         servo.ahead()
         move.move(25, 'forward', 'no', 1)
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
-    elif status_middle == 1 and status_left == 1 and status_right == 1:
+    # elif status_middle == 0 and status_left == 1 and status_right == 0:
+    elif status_middle == 1:
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         move.motorStop()
-    elif status_middle == 0 and status_left == 1 and status_right == 0:
+    elif status_left == 1:
+    # elif status_middle == 0 and status_left == 1 and status_right == 0:
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         servo.lookright(10)
         move.move(25, 'forward', 'no', 0.6)
-    elif status_middle == 0 and status_left == 0 and status_right == 1:
+    elif status_right == 1:
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         servo.lookleft(10)
         move.move(25, 'forward', 'no', 0.6)
