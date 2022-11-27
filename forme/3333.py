@@ -18,53 +18,60 @@ result = []
 spare = "none"
 servo.servo_init()
 i = 0
-path = "/home/pi/adeept_car/photos/spare"
 classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
 model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
 spare_number = 3
+file = "/home/pi/adeept_car/photos/spare"
+e = 0
+
+def capture_spare():
+    global e
+    _, image = cap.read()
+    save_image = cv2.flip(image, 1)
+    cv2.imshow('Save', save_image)
+    cv2.imwrite("%s_%05d.png" % (file, i), save_image)
+    e += 1
 
 
-def spare_capture():
-    global spare, cap, result, i, classes, model
-
+def check_photo():
+    global spare, cap, result, i, classes, model, file
     size = (224, 224)
-    ret, img = cap.read()
-    h, w, _ = img.shape
-    cx = h / 2
-    img = img[:, 200:200 + img.shape[0]]
-    img = cv2.flip(img, 1)
-    cv2.imwrite("%s_%05d.png" % (path, i), img)
-    i += 1
-    img_input = cv2.resize(img, size)
-    img_input = cv2.cvtColor(img_input, cv2.COLOR_BGR2RGB)
-    img_input = (img_input.astype(np.float32) / 127.0) - 1
-    img_input = np.expand_dims(img_input, axis=0)
-    prediction = model.predict(img_input)
-    idx = np.argmax(prediction)
-    spare = classes[idx]
-    print("spare is:", spare)
-    if spare == 'Empty':
-        print("Empty")  # GUI로 보내기
-        result.append('Empty')
-    elif spare == 'Spindle_1':
-        print("Spindle_1")  # GUI로 보내기
-        result.append('Spindle_1')
-    elif spare == 'Spindle_2':
-        print("Spindle_2")  # GUI로 보내기
-        result.append('Spindle_2')
-    elif spare == 'Spindle_3':
-        print("Spindle_3")  # GUI로 보내기
-        result.append('Spindle_3')
-    elif spare == 'Spring_1':
-        print("Spring_1")  # GUI로 보내기
-        result.append('Spring_1')
-    elif spare == 'Spring_2':
-        print("Spring_2")  # GUI로 보내기
-        result.append('Spring_2')
-    elif spare == 'Spring_3':
-        print("Spring_3")  # GUI로 보내기
-        result.append('Spring_3')
-    # cv2.putText(img, text=classes[idx], org=(10, 30), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.8, color=(255, 255, 255), thickness=2)
+
+    for i in range(spare_number):
+        img = cv2.imwrite("%s_%05d.png" % (file, i), img)
+        h, w, _ = img.shape
+        cx = h / 2
+        img = img[:, 200:200 + img.shape[0]]
+        img = cv2.flip(img, 1)
+        img_input = cv2.resize(img, size)
+        img_input = cv2.cvtColor(img_input, cv2.COLOR_BGR2RGB)
+        img_input = (img_input.astype(np.float32) / 127.0) - 1
+        img_input = np.expand_dims(img_input, axis=0)
+        prediction = model.predict(img_input)
+        idx = np.argmax(prediction)
+        spare = classes[idx]
+        print("spare is:", spare)
+        if spare == 'Empty':
+            print("Empty")  # GUI로 보내기
+            result.append('Empty')
+        elif spare == 'Spindle_1':
+            print("Spindle_1")  # GUI로 보내기
+            result.append('Spindle_1')
+        elif spare == 'Spindle_2':
+            print("Spindle_2")  # GUI로 보내기
+            result.append('Spindle_2')
+        elif spare == 'Spindle_3':
+            print("Spindle_3")  # GUI로 보내기
+            result.append('Spindle_3')
+        elif spare == 'Spring_1':
+            print("Spring_1")  # GUI로 보내기
+            result.append('Spring_1')
+        elif spare == 'Spring_2':
+            print("Spring_2")  # GUI로 보내기
+            result.append('Spring_2')
+        elif spare == 'Spring_3':
+            print("Spring_3")  # GUI로 보내기
+            result.append('Spring_3')
 
 
 def setup():
@@ -115,7 +122,7 @@ def readtoimg(image):
 
 
 def show_gui(number):
-    global result
+    global result, file
     window = Tk()
     window.title("Space Stock")
     window.geometry("640x300")
@@ -167,6 +174,7 @@ try:
         elif carState == "all_stop":
             servo.servo_init()
             servo.lookdown(100)
+            check_photo()
             show_gui(len(result))
 
         elif carState == "stop":
@@ -184,7 +192,7 @@ try:
                 move.motorStop()
                 servo.up(180)
                 time.sleep(4)
-                spare_capture()
+                capture_spare()
                 servo.down(180)
                 print("capture")
                 print(result)

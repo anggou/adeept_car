@@ -5,6 +5,9 @@ import move
 import servo
 from tensorflow.keras.models import load_model
 import numpy as np
+from tkinter import *
+from PIL import Image
+from PIL import ImageTk
 
 line_pin_right = 19
 line_pin_middle = 16
@@ -18,6 +21,7 @@ i = 0
 path = "/home/pi/adeept_car/photos/spare"
 classes = ['Empty', 'Spindle_1', 'Spindle_2', 'Spindle_3', 'Spring_1', 'Spring_2', 'Spring_3']
 model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
+spare_number = 3
 
 
 def spare_capture():
@@ -72,9 +76,9 @@ def setup():
     # motor.setup()
 
 
-def just_go():
+def just_go(sec):
     move.move(25, 'forward', 'no', 1)
-    time.sleep(0.5)
+    time.sleep(sec)
 
 
 def Tracking_line():
@@ -87,7 +91,7 @@ def Tracking_line():
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         move.motorStop()
     elif status_left == 1:
-    # elif status_middle == 0 and status_left == 1 and status_right == 0:
+        # elif status_middle == 0 and status_left == 1 and status_right == 0:
         print('LF3: %d   LF2: %d   LF1: %d\n' % (status_right, status_middle, status_left))
         servo.lookright(10)
         move.move(25, 'forward', 'no', 0.6)
@@ -101,7 +105,45 @@ def Tracking_line():
         time.sleep(1)
 
 
+def readtoimg(image):
+    src = cv2.flip(image, 1)
+    src = cv2.resize(src, (210, 150))
+    img = cv2.cvtColor(src, cv2.COLOR_BGR2RGB)
+    img = Image.fromarray(img)
+    img = ImageTk.PhotoImage(image=img)
+    return img
+
+
+def show_gui(number):
+    global result
+    window = Tk()
+    window.title("Space Stock")
+    window.geometry("640x300")
+    file = "/home/pi/adeept_car/photos/spare"
+
+    for i in range(number):
+        image = cv2.imread("%s_%05d.png" % (file, i), 1)
+        globals()["image{}".format(i)] = readtoimg(image)
+        globals()["label{}".format(i)] = Label(window, image=globals()["image{}".format(i)])
+        globals()["label{}".format(i)].pack(side="left")
+
+    spare1 = Label(window, text='1111111111')
+    spare1.place(x=20, y=250)
+
+    spare2 = Label(window, text='2222')
+    spare2.place(x=20 + 210, y=250)
+
+    spare3 = Label(window, text='3333')
+    spare3.place(x=20 + 420, y=250)
+
+    text = Text(window, width=1, height=1)
+    text.pack(side="bottom")
+
+    window.mainloop()
+
+
 try:
+    global result
     while True:
         setup()
         move.setup()
@@ -122,9 +164,14 @@ try:
         elif keyValue == 84:
             print("stop")
             carState = "stop"
+        elif carState == "all_stop":
+            servo.servo_init()
+            servo.lookdown(100)
+            show_gui(len(result))
+
         elif carState == "stop":
             time.sleep(3)
-            servo.lookdown(50)
+            move.motorStop()
 
         while carState == "go":
             status_right = GPIO.input(line_pin_right)
@@ -136,15 +183,18 @@ try:
             if status_middle == 1 and status_left == 1 and status_right == 1:
                 move.motorStop()
                 servo.up(180)
+                time.sleep(4)
                 spare_capture()
                 servo.down(180)
                 print("capture")
                 print(result)
+                just_go(1)
 
-            if len(result) == 3:
+            if len(result) == spare_number:
                 move.motorStop()
                 print(len(result))
-                carState = "stop"
+                carState = "all_stop"
+
                 break
 
 except KeyboardInterrupt:
