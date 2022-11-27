@@ -23,15 +23,17 @@ model = load_model('/home/pi/adeept_car/forme/keras_model.h5')
 spare_number = 3
 file = "/home/pi/adeept_car/photos/spare"
 e = 0
+f = 0
 
 
 def capture_spare():
-    global e
+    global e, f
     _, image = cap.read()
     save_image = cv2.flip(image, 1)
     cv2.imshow('Save', save_image)
     cv2.imwrite("%s_%05d.png" % (file, i), save_image)
     e += 1
+    f += 1
 
 
 def check_photo():
@@ -152,7 +154,6 @@ def show_gui(number):
 
 try:
     while True:
-        global result
         setup()
         move.setup()
         keyValue = cv2.waitKey(1)
@@ -183,7 +184,6 @@ try:
             move.motorStop()
 
         while carState == "go":
-            f = 0
             status_right = GPIO.input(line_pin_right)
             status_middle = GPIO.input(line_pin_middle)
             status_left = GPIO.input(line_pin_left)
@@ -197,7 +197,6 @@ try:
                 capture_spare()
                 servo.down(180)
                 print("capture")
-                f += 1
                 print(f)
                 just_go(1)
 
