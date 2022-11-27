@@ -123,6 +123,7 @@ try:
             print("stop")
             carState = "stop"
         elif carState == "stop":
+            time.sleep(3)
             servo.lookdown(50)
 
         while carState == "go":
@@ -135,7 +136,7 @@ try:
             if status_middle == 1 and status_left == 1 and status_right == 1:
                 move.motorStop()
                 servo.up(180)
-                #                 spare_capture()
+                spare_capture()
                 servo.down(180)
                 print("capture")
                 print(result)

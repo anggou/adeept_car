@@ -37,14 +37,13 @@ def spare_capture():
         print("cc")
 
     cv2.destroyAllWindows()
-
+    cap.release()
     h, w, _ = img.shape
     cx = h / 2
     img = img[:, 200:200 + img.shape[0]]
     img = cv2.flip(img, 1)
     cv2.imwrite("%s_%05d.png" % (path, i), img)
     i+=1
-    cap.release()
     img_input = cv2.resize(img, size)
     img_input = cv2.cvtColor(img_input, cv2.COLOR_BGR2RGB)
     img_input = (img_input.astype(np.float32) / 127.0) - 1
