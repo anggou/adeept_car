@@ -29,9 +29,9 @@ os.system("sudo apt-get purge -y libreoffice*")
 os.system("sudo apt-get -y clean")
 os.system("sudo apt-get -y autoremove")
 
-# for x in range(1,4):
-# 	if os.system("sudo apt-get -y upgrade") == 0:
-# 		break
+for x in range(1,4):
+	if os.system("sudo apt-get -y upgrade") == 0:
+		break
 
 for x in range(1,4):
 	if os.system("sudo pip3 install -U pip") == 0:
