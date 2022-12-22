@@ -18,13 +18,13 @@ window=Tk()
 window.title("Space Stock")
 window.geometry("640x300")
 
-image = cv2.imread("/home/pi/adeept_car/photos/train_00000_001.png",1)
+image = cv2.imread("../photos/train_00000_001.png",1)
 imgtk1 = readtoimg(image)
 
-image = cv2.imread("/home/pi/adeept_car/photos/train_00001_002.png",1)
+image = cv2.imread("../photos/train_00001_002.png",1)
 imgtk2 = readtoimg(image)
 
-image = cv2.imread("/home/pi/adeept_car/photos/train_00002_003.png",1)
+image = cv2.imread("../photos/train_00002_003.png",1)
 imgtk3 = readtoimg(image)
 
 
