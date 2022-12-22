@@ -13,7 +13,7 @@ def readtoimg(image):
     img = ImageTk.PhotoImage(image=img)
     return img
     
-path ="/home/pi/adeept_car/photos/train_00000_001.png"
+path ="../photos/train_00000_001.png"
 window=Tk()
 window.title("Space Stock")
 window.geometry("640x300")
